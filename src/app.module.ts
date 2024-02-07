@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProductsController } from './controllers/products.controller';
+import { ProductsService } from './services/products.service';
+import { Product } from './entities/product.entity';
+import { ProductModule } from './modules/products.module';
 
 @Module({
   imports: [
@@ -12,9 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: "root",
       password: "root",
       database: "dbemergentes",
-      entities: [__dirname + "/**/*.entity{.ts,.js}"],
-      synchronize: true, // Esto crea automáticamente las tablas en la base de datos (solo para desarrollo)
-    }),
+      entities: [Product],
+      synchronize: true, 
+      }), ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],
