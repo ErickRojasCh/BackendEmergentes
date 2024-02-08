@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { ProductModule } from './modules/products.module';
@@ -23,7 +21,7 @@ import { AuthGuard } from './guards/auth.guard';
       synchronize: true, 
       }), ProductModule, UsersModule, AuthModule
   ],
-  controllers: [AppController],
-  providers: [AppService, AuthGuard],
+  controllers: [],
+  providers: [AuthGuard],
 })
 export class AppModule {}
