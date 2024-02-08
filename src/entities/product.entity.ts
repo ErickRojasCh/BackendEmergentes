@@ -13,5 +13,8 @@ export class Product {
 
   @Column({ type: "decimal", precision: 10, scale: 2 })
   price: number;
+
+  @Column({ default: false }) // Agregamos el campo deleted con valor predeterminado false
+  deleted: boolean;
 }
 

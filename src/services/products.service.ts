@@ -11,7 +11,7 @@ export class ProductsService {
   ) {}
 
   async findAll(): Promise<Product[]> {
-    return this.productRepository.find();
+    return this.productRepository.find({where:{deleted:false}});
   }
 
   async findOne(id: number): Promise<Product | undefined> {
@@ -28,7 +28,15 @@ export class ProductsService {
     return this.productRepository.findOne({where:{id:id}});
   }
 
-  async remove(id: number): Promise<void> {
-    await this.productRepository.delete(id);
+  async remove(id: number): Promise<{ success: boolean; message: string }> {
+    try {
+      const result = await this.productRepository.update(id, { deleted: true });
+      if (result.affected === 0) {
+        return { success: false, message: "El producto no se encontró." };
+      }
+      return { success: true, message: "El producto se eliminó correctamente." };
+    } catch (error) {
+      return { success: false, message: "Ocurrió un problema al intentar eliminar el producto." };
+    }
   }
 }
