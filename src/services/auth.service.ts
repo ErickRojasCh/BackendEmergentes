@@ -11,14 +11,15 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<{ access_token: string }> {
     const user = await this.userService.validateUser(email, password);
     if (!user) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
     const payload = { username: user.username, sub: user.id };
+    
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 

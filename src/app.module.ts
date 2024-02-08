@@ -1,12 +1,13 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { ProductModule } from './modules/products.module';
 import { UsersModule } from './modules/users.module';
 import { User } from './entities/user.entity';
-import { AuthController } from './controllers/auth.controller';
 import { AuthModule } from './modules/auth.module';
 import { AuthGuard } from './guards/auth.guard';
+import { AuthMiddleware } from './middleware/auth.middleware';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -19,9 +20,14 @@ import { AuthGuard } from './guards/auth.guard';
       database: "dbemergentes",
       entities: [Product,User],
       synchronize: true, 
-      }), ProductModule, UsersModule, AuthModule
+      }), ProductModule, UsersModule, AuthModule,
+      JwtModule.register({})
   ],
   controllers: [],
   providers: [AuthGuard],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*'); // Aplicar el middleware de autenticación a todas las rutas
+  }
+}

@@ -39,4 +39,7 @@ export class UserService {
     // Si no, devolver null
     return null;
   }
+  async findAllUsers(): Promise<User[]> {
+    return this.userRepository.find();
+  }
 }
