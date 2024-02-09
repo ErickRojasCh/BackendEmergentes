@@ -7,6 +7,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  // Habilitar CORS para cualquier dominio y solicitud
+  app.enableCors();
+
   // Obtener el puerto de la variable de entorno o usar el puerto 3000 por defecto
   const port = process.env.PORT || 3000;
   const config = new DocumentBuilder()
